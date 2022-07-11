@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Box</title>
+    <script
+      src="http://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous">
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="banner">Movie Box</h1>
+        <h2>1. Create a movie</h2>
+        <div>
+            <label for="mname">Movie Name
+                <input id="mname" type="text" />
+            </label>
+            <label for="year">Released year
+                <input id="year" type="text" />
+            </label>
+            <label for="type">Movie Type
+                <input id="type" type="text" />
+            </label>
+            <button id="create">Create</button>
+        </div>
+        </br>
+
+        <h2>2. Get the list of Movies</h2>
+        <div>
+            <table>
+                <caption>Movies List</caption>
+                <thead>
+                    <tr>
+                        <th>Movie Name</th>
+                        <th>Released Date</th>
+                        <th>Movie Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>3. Get a Single Movie</h2>
+        <label for="mnameone">Movie Name:
+            <input id="mnameone" type="text" />
+        </label>
+        <table>
+            <caption>Movie</caption>
+                <thead>
+                    <tr>
+                        <th>Movie Name</th>
+                        <th>Released Date</th>
+                        <th>Movie Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+        </table>
+
+        <h2>4. Update a movie in the list</h2>
+        <label for="mname">Movie Name
+                <input id="mnameu" type="text" />
+            </label>
+            <label for="year">Released year
+                <input id="yearu" type="text" />
+            </label>
+            <label for="type">Movie Type
+                <input id="typeu" type="text" />
+            </label>
+            <button id="update">Update</button>
+        </label>
+    </div>
+</body>
+<script src="static/js/home.js"></script>
+</html>
