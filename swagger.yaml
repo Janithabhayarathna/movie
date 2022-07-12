@@ -1,0 +1,106 @@
+openapi: 3.0.0
+servers:
+
+  - description: Movie App
+    url: http://localhost:5000/
+info:
+  description: This is a simple movie API
+  version: "1.0.0"
+  title: Simple movie API
+  contact:
+    email: abhayaratnajanith3@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /api/movie/list:
+    get:
+      tags:
+        - movie
+      summary: searches movie
+      operationId: view.get
+      description: |
+        Search for movies
+
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/movieItem'
+        '400':
+          description: bad input parameter
+
+  /api/movie/create:
+    post:
+      tags:
+        - movie
+      summary: adds a movie
+      operationId: view.post
+      description: Adds a movie to the system
+      responses:
+        '201':
+          description: movie created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing movie already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/movieItem'
+        description: movie to add
+
+
+#  /api/movie/{movie_id}:
+#    get:
+#      operationId: view.get_one
+#      tags:
+#        - movie
+#      summary: Get a movie in the movie list by id
+#      description: Get a movie in the movie list
+#      parameters:
+#        - name: movie_id
+#          in: path
+#          description: movie ID
+#          required: true
+#          schema:
+#            type: integer
+#            format: int64
+
+  /api/movie/update/{movie_id}:
+    put:
+      operationId: view.put
+      tags:
+        - movie
+      summary: Update a movie in the movie list
+      description: Update a movie in the movie list
+      parameters:
+        - name: movie_id
+          in: path
+          description: movie ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+
+      responses:
+        200:
+          description: Successfully updated a movie in movie list
+
+components:
+  schemas:
+    movieItem:
+      type: object
+
+      properties:
+        movie_name:
+          type: string
+        released_year:
+          type: string
+        movie_type:
+          type: string
