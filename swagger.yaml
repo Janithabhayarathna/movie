@@ -128,7 +128,6 @@ paths:
           description: The id of the movie to update.
           schema:
             type: integer
-            format: id
       requestBody:
         content:
           application/json:

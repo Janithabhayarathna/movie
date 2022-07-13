@@ -30,6 +30,7 @@ def post():
         new_movie = Movie(**data)
         movie_schema = MovieSchema()
         db.session.add(new_movie)
+
         db.session.commit()
         return movie_schema.jsonify(new_movie)
 
@@ -41,24 +42,29 @@ def post():
 def update(movie_id):
 
     movie = request.get_json()
-    update_movie = Movie.query.filter(
-        Movie.movie_id == movie_id
+    existing_movie = Movie.query.filter_by                                      (
+        movie_id == movie_id
     ).first()
+
 
     # Try to find an existing movie with the same name as the update
     movie_name = movie.get("movie_name")
     released_year = movie.get("released_year")
     movie_type = movie.get("movie_type")
 
-    existing_movie = (
-        Movie.query.filter(Movie.movie_name == movie_name)
-        .filter(Movie.released_year == released_year)
-        .filter(Movie.movie_type == movie_type)
-        .one_or_none()
-    )
+
+
+
+
+    # existing_movie = (
+    #     Movie.query.filter(Movie.movie_name == movie_name)
+    #     .filter(Movie.released_year == released_year)
+    #     .filter(Movie.movie_type == movie_type)
+    #     .one_or_none()
+    # )
 
     # Are we trying to find a person that does not exist?
-    if update_movie is None:
+    if existing_movie is None:
         abort(
             404,
             "Movie not found for Id: {movie_id}".format(movie_id=movie_id),
@@ -78,21 +84,26 @@ def update(movie_id):
     # Otherwise go ahead and update!
     else:
 
+        new_movie = Movie(movie_name, released_year, movie_type)
+
+
         # turn the passed in movie into a db object
         schema = MovieSchema()
-        update = schema.load(movie)
+        update = schema.load(new_movie)
         movie_schema = MovieSchema()
-        data_existing = movie_schema.jsonify(update_movie)
-        data_new = movie_schema.jsonify(update)
+
+        # existing_movie.movie.movie_id = existing_movie.movie.movie_id
+        # data_existing = movie_schema.jsonify(update_movie)
+        # data_new = movie_schema.jsonify(update)
         # Set the id to the movie we want to update
-        data_new.movie_id = data_existing.movie_id
+        # data_new.movie_id = data_existing.movie_id
 
         # merge the new object into the old and commit it to the db
         db.session.merge(update)
         db.session.commit()
 
         # return updated person in the response
-        data_existing = schema.dump(update_movie)
+        data_existing = schema.dump(existing_movie)
 
         return data_existing, 200
 
