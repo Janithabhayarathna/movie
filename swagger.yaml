@@ -17,7 +17,7 @@ paths:
     get:
       tags:
         - movie
-      summary: searches movie
+      summary: Get the list of movies
       operationId: view.get
       description: |
         Search for movies
@@ -55,30 +55,97 @@ paths:
               $ref: '#/components/schemas/movieItem'
         description: movie to add
 
+  /api/movie/retrieve/{movie_id}:
+    get:
+      tags:
+        - movie
+      summary: Get a movie by movie id
+      operationId: view.get_one
+      description: |
+        Search for a movie
+      parameters:
+        - name: movie_id
+          in: path
+          description: movie ID
+          required: true
+          schema:
+            type: integer
+            format: int64
 
-#  /api/movie/{movie_id}:
-#    get:
-#      operationId: view.get_one
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/movieItem'
+        '400':
+          description: bad input parameter
+
+#  /api/movie/update/{movie_id}:
+#    put:
+#      operationId: view.update
 #      tags:
 #        - movie
-#      summary: Get a movie in the movie list by id
-#      description: Get a movie in the movie list
+#      summary: Update a movie in the movie list
+#      description: Update a movie in the movie list
 #      parameters:
 #        - name: movie_id
 #          in: path
-#          description: movie ID
+#          type: integer
 #          required: true
+#        - name: movie
+#          in: body
 #          schema:
-#            type: integer
-#            format: int64
+#            type: object
+#            properties:
+#              movie_name:
+#                type: string
+#                description: Name of the movie
+#              released_year:
+#                type: string
+#                description: Movie released year
+#              movie_type:
+#                type: string
+#                description: Movie type
+#      responses:
+#        200:
+#          description: Successfully updated the movie in movie list
 
   /api/movie/update/{movie_id}:
     put:
-      operationId: view.put
+      operationId: view.update
       tags:
         - movie
       summary: Update a movie in the movie list
       description: Update a movie in the movie list
+      parameters:
+        - name: movie_id
+          in: path
+          required: true
+          description: The id of the movie to update.
+          schema:
+            type: integer
+            format: id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/movieItem'
+        description: movie to add
+      responses:
+        "200":
+          description: Successfully updated the movie in movie list
+
+  /api/movie/delete/{movie_id}:
+    delete:
+      operationId: view.delete
+      tags:
+        - movie
+      summary: Delete a movie in the movie list
+      description: Delete a movie in the movie list
       parameters:
         - name: movie_id
           in: path
