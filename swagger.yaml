@@ -20,7 +20,7 @@ paths:
       summary: Get the list of movies
       operationId: view.get
       description: |
-        Search for movies
+        Get the movies list
 
       responses:
         '200':
