@@ -11,3 +11,31 @@ class MovieSchema(ma.Schema):
             'released_year',
             'movie_type'
         )
+
+
+class TheaterSchema(ma.Schema):
+    class Meta:
+        fields = (
+            'theater_id',
+            'theater_name',
+            'theater_address',
+            'theater_type'
+        )
+
+
+class ActorSchema(ma.Schema):
+    class Meta:
+        fields = (
+            'actor_id',
+            'actor_name',
+            'actor_address'
+        )
+
+
+class DirectorSchema(ma.Schema):
+    class Meta:
+        fields = (
+            'director_id',
+            'director_name',
+            'director_address'
+        )

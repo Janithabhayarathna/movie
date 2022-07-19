@@ -4,7 +4,7 @@ servers:
   - description: Movie App
     url: http://localhost:5000/
 info:
-  description: This is a simple movie API
+  description: This is a simple movie/theater API
   version: "1.0.0"
   title: Simple movie API
   contact:
@@ -13,12 +13,12 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 paths:
-  /api/movie/list:
+  /api/movies:
     get:
       tags:
-        - movie
+        - movies
       summary: Get the list of movies
-      operationId: view.get
+      operationId: view.get_movie_list
       description: |
         Get the movies list
 
@@ -34,12 +34,12 @@ paths:
         '400':
           description: bad input parameter
 
-  /api/movie/create:
+
     post:
       tags:
-        - movie
+        - movies
       summary: adds a movie
-      operationId: view.post
+      operationId: view.post_movie
       description: Adds a movie to the system
       responses:
         '201':
@@ -55,12 +55,12 @@ paths:
               $ref: '#/components/schemas/movieItem'
         description: movie to add
 
-  /api/movie/retrieve/{movie_id}:
+  /api/movies/{movie_id}:
     get:
       tags:
-        - movie
+        - movies
       summary: Get a movie by movie id
-      operationId: view.get_one
+      operationId: view.get_one_movie
       description: |
         Search for a movie
       parameters:
@@ -84,41 +84,11 @@ paths:
         '400':
           description: bad input parameter
 
-#  /api/movie/update/{movie_id}:
-#    put:
-#      operationId: view.update
-#      tags:
-#        - movie
-#      summary: Update a movie in the movie list
-#      description: Update a movie in the movie list
-#      parameters:
-#        - name: movie_id
-#          in: path
-#          type: integer
-#          required: true
-#        - name: movie
-#          in: body
-#          schema:
-#            type: object
-#            properties:
-#              movie_name:
-#                type: string
-#                description: Name of the movie
-#              released_year:
-#                type: string
-#                description: Movie released year
-#              movie_type:
-#                type: string
-#                description: Movie type
-#      responses:
-#        200:
-#          description: Successfully updated the movie in movie list
 
-  /api/movie/update/{movie_id}:
     put:
-      operationId: view.update
+      operationId: view.update_movie
       tags:
-        - movie
+        - movies
       summary: Update a movie in the movie list
       description: Update a movie in the movie list
       parameters:
@@ -133,16 +103,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/movieItem'
-        description: movie to add
+        description: movie to update
       responses:
         "200":
           description: Successfully updated the movie in movie list
 
-  /api/movie/delete/{movie_id}:
     delete:
-      operationId: view.delete
+      operationId: view.delete_movie
       tags:
-        - movie
+        - movies
       summary: Delete a movie in the movie list
       description: Delete a movie in the movie list
       parameters:
@@ -156,7 +125,120 @@ paths:
 
       responses:
         200:
-          description: Successfully updated a movie in movie list
+          description: Successfully deleted a movie in the movie list
+
+  /api/theaters:
+    get:
+      tags:
+        - theaters
+      summary: Get the list of theaters
+      operationId: view.get_theater_list
+      description: |
+        Get the theaters list
+
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/theatersItem'
+        '400':
+          description: bad input parameter
+
+    post:
+      tags:
+        - theaters
+      summary: adds a theater
+      operationId: view.post_theater
+      description: Adds a theater to the system
+      responses:
+        '201':
+          description: theater created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing theater already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/theatersItem'
+        description: theater to add
+
+  /api/theaters/{theater_id}:
+    get:
+      tags:
+        - theaters
+      summary: Get a theater by theater id
+      operationId: view.get_one_theater
+      description: |
+        Search for a theater
+      parameters:
+        - name: theater_id
+          in: path
+          description: theater ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/theatersItem'
+        '400':
+          description: bad input parameter
+
+    put:
+      operationId: view.update_theater
+      tags:
+        - theaters
+      summary: Update a theater in the theaters list
+      description: Update a theater in the theaters list
+      parameters:
+        - name: theater_id
+          in: path
+          required: true
+          description: The id of the theater to update.
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/theatersItem'
+        description: movie to update
+      responses:
+        "200":
+          description: Successfully updated the theater in the theater list
+
+    delete:
+      operationId: view.delete_theater
+      tags:
+        - theaters
+      summary: Delete a theater in the theater list
+      description: Delete a theater in the theater list
+      parameters:
+        - name: theater_id
+          in: path
+          description: theater ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+
+      responses:
+        200:
+          description: Successfully deleted a theater in the theater list
+
 
 components:
   schemas:
@@ -169,4 +251,15 @@ components:
         released_year:
           type: string
         movie_type:
+          type: string
+
+    theatersItem:
+      type: object
+
+      properties:
+        theater_name:
+          type: string
+        theater_address:
+          type: string
+        theater_type:
           type: string
