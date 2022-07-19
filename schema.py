@@ -23,6 +23,16 @@ class TheaterSchema(ma.Schema):
         )
 
 
+class TheaterMovieSchema(ma.Schema):
+    class Meta:
+        fields = (
+            'movie_id',
+            'theater_name',
+            'theater_address',
+            'theater_type'
+        )
+
+
 class ActorSchema(ma.Schema):
     class Meta:
         fields = (

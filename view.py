@@ -1,5 +1,5 @@
 from model import Movie, Theater, db
-from schema import MovieSchema, TheaterSchema
+from schema import MovieSchema, TheaterSchema, TheaterMovieSchema
 from flask import jsonify, request, abort, make_response
 
 
@@ -96,7 +96,6 @@ def delete_movie(movie_id):
 
 
 def get_theater_list(theater_id=None):
-
     try:
         if theater_id is None:
             theater = Theater.query.filter().all()
@@ -118,6 +117,20 @@ def get_one_theater(theater_id):
     return theater_schema.jsonify(theater)
 
 
+def get_one_theater_movie(movie_id, theater_id):
+    theater = Theater.query.join(Movie, Movie.movie_id == Theater.theater_id).filter(Movie.movie_id == movie_id).filter(Theater.theater_id == theater_id).one_or_none()
+    if theater is not None:
+        theater_schema = TheaterSchema()
+        data = theater_schema.dump(theater).data
+        return data
+
+    else:
+        abort(404, f"Theater not found for Id: {theater_id}")
+
+    theater_schema = TheaterSchema()
+    return theater_schema.jsonify(theater)
+
+
 def post_theater():
     data = request.get_json()
     try:
@@ -131,6 +144,32 @@ def post_theater():
     except Exception as e:
         print(e)
         jsonify({"error": "There was an error."})
+
+
+def post_theater_movie(movie_id):
+    movie = Movie.query.filter(Movie.movie_id == movie_id).one_or_none()
+    data = request.get_json()
+
+    theater_name = data.get("theater_name")
+    theater_address = data.get("theater_address")
+    theater_type = data.get("theater_type")
+
+    if movie is None:
+        abort(404, f"Movie not found for Id: {movie_id}")
+
+    else:
+
+        new_theater = Theater(theater_name, theater_address, theater_type)
+        new_theater.movie_id = movie_id
+
+        schema = TheaterMovieSchema()
+
+        db.session.merge(new_theater)
+        db.session.commit()
+
+        theater_data = schema.dump(new_theater)
+
+        return theater_data, 200
 
 
 def update_theater(theater_id):

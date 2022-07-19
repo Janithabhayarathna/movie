@@ -168,34 +168,73 @@ paths:
               $ref: '#/components/schemas/theatersItem'
         description: theater to add
 
-  /api/theaters/{theater_id}:
-    get:
+  /api/movies/{movie_id}/theaters:
+    post:
       tags:
         - theaters
-      summary: Get a theater by theater id
-      operationId: view.get_one_theater
-      description: |
-        Search for a theater
+      summary: Adds a theater relevant to a movie
+      operationId: view.post_theater_movie
+      description: Adds a theater to the system
       parameters:
-        - name: theater_id
+        - name: movie_id
           in: path
-          description: theater ID
+          description: movie ID
           required: true
           schema:
             type: integer
             format: int64
-
       responses:
-        '200':
-          description: search results matching criteria
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/theatersItem'
+        '201':
+          description: theater created
         '400':
-          description: bad input parameter
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing theater already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/theatersItem'
+        description: theater to add
+
+#  /api/movies/{movie_id}/theaters/{theater_id}:
+#    get:
+#      tags:
+#        - theaters
+#      summary: Get a theater details by theater id relevant to a movie
+#      operationId: view.get_one_theater_movie
+#      description: |
+#        Search for a theater
+#      parameters:
+#        - name: movie_id
+#          in: path
+#          description: ID of the movie
+#          required: true
+#          schema:
+#            type: integer
+#            format: int64
+#        - name: theater_id
+#          in: path
+#          description: theater ID
+#          required: true
+#          schema:
+#            type: integer
+#            format: int64
+#
+#      responses:
+#        '200':
+#          description: search results matching criteria
+#          content:
+#            application/json:
+#              schema:
+#                type: array
+#                items:
+#                  $ref: '#/components/schemas/theatersItem'
+#        '400':
+#          description: bad input parameter
+
+  /api/theaters/{theater_id}:
+
 
     put:
       operationId: view.update_theater
