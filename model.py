@@ -10,6 +10,8 @@ class Movie(db.Model):
     released_year = db.Column(db.String(4))
     movie_type = db.Column(db.String(32))
     theaters = db.relationship('Theater', backref='movie')
+    actors = db.relationship('Actor', backref='movie')
+    directors = db.relationship('Director', backref='movie')
 
     def __repr__(self):
         return '<Movie %r>' % self.item
@@ -37,27 +39,29 @@ class Theater(db.Model):
         self.theater_type = theater_type
 
 
-# class Actor(db.Model):
-#     actor_id = db.Column(db.Integer, primary_key=True)
-#     actor_name = db.Column(db.String(32))
-#     actor_address = db.Column(db.String(32))
-#
-#     def __repr__(self):
-#         return '<Actor %r>' % self.item
-#
-#     def __init__(self, actor_name, actor_address):
-#         self.actor_name = actor_name
-#         self.actor_address = actor_address
-#
-#
-# class Director(db.Model):
-#     director_id = db.Column(db.Integer, primary_key=True)
-#     director_name = db.Column(db.String(32))
-#     director_address = db.Column(db.String(34))
-#
-#     def __repr__(self):
-#         return '<Director %r>' % self.item
-#
-#     def __init__(self, director_name, director_address):
-#         self.director_name = director_name
-#         self.director_address = director_address
+class Actor(db.Model):
+    actor_id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.movie_id'))
+    actor_name = db.Column(db.String(32))
+    actor_address = db.Column(db.String(32))
+
+    def __repr__(self):
+        return '<Actor %r>' % self.item
+
+    def __init__(self, actor_name, actor_address):
+        self.actor_name = actor_name
+        self.actor_address = actor_address
+
+
+class Director(db.Model):
+    director_id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer, db.ForeignKey('movie.movie_id'))
+    director_name = db.Column(db.String(32))
+    director_address = db.Column(db.String(34))
+
+    def __repr__(self):
+        return '<Director %r>' % self.item
+
+    def __init__(self, director_name, director_address):
+        self.director_name = director_name
+        self.director_address = director_address
