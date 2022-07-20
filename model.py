@@ -4,6 +4,7 @@ db = SQLAlchemy()
 
 
 class Movie(db.Model):
+    __tablename__ = "movie"
     movie_id = db.Column(db.Integer, primary_key=True)
     movie_name = db.Column(db.String(32))
     released_year = db.Column(db.String(4))
@@ -20,6 +21,7 @@ class Movie(db.Model):
 
 
 class Theater(db.Model):
+    __tablename__ = "theater"
     theater_id = db.Column(db.Integer, primary_key=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.movie_id'))
     theater_name = db.Column(db.String(32))
@@ -35,27 +37,27 @@ class Theater(db.Model):
         self.theater_type = theater_type
 
 
-class Actor(db.Model):
-    actor_id = db.Column(db.Integer, primary_key=True)
-    actor_name = db.Column(db.String(32))
-    actor_address = db.Column(db.String(32))
-
-    def __repr__(self):
-        return '<Actor %r>' % self.item
-
-    def __init__(self, actor_name, actor_address):
-        self.actor_name = actor_name
-        self.actor_address = actor_address
-
-
-class Director(db.Model):
-    director_id = db.Column(db.Integer, primary_key=True)
-    director_name = db.Column(db.String(32))
-    director_address = db.Column(db.String(34))
-
-    def __repr__(self):
-        return '<Director %r>' % self.item
-
-    def __init__(self, director_name, director_address):
-        self.director_name = director_name
-        self.director_address = director_address
+# class Actor(db.Model):
+#     actor_id = db.Column(db.Integer, primary_key=True)
+#     actor_name = db.Column(db.String(32))
+#     actor_address = db.Column(db.String(32))
+#
+#     def __repr__(self):
+#         return '<Actor %r>' % self.item
+#
+#     def __init__(self, actor_name, actor_address):
+#         self.actor_name = actor_name
+#         self.actor_address = actor_address
+#
+#
+# class Director(db.Model):
+#     director_id = db.Column(db.Integer, primary_key=True)
+#     director_name = db.Column(db.String(32))
+#     director_address = db.Column(db.String(34))
+#
+#     def __repr__(self):
+#         return '<Director %r>' % self.item
+#
+#     def __init__(self, director_name, director_address):
+#         self.director_name = director_name
+#         self.director_address = director_address

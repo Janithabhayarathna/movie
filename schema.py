@@ -23,6 +23,20 @@ class TheaterSchema(ma.Schema):
         )
 
 
+class MovieTheaterSchema(ma.Schema):
+    class Meta:
+        fields = (
+            'movie_id',
+            'movie_name',
+            'released_year',
+            'movie_type',
+            'theater_id',
+            'theater_name',
+            'theater_address',
+            'theater_type'
+        )
+
+
 class TheaterMovieSchema(ma.Schema):
     class Meta:
         fields = (
@@ -33,19 +47,19 @@ class TheaterMovieSchema(ma.Schema):
         )
 
 
-class ActorSchema(ma.Schema):
-    class Meta:
-        fields = (
-            'actor_id',
-            'actor_name',
-            'actor_address'
-        )
-
-
-class DirectorSchema(ma.Schema):
-    class Meta:
-        fields = (
-            'director_id',
-            'director_name',
-            'director_address'
-        )
+# class ActorSchema(ma.Schema):
+#     class Meta:
+#         fields = (
+#             'actor_id',
+#             'actor_name',
+#             'actor_address'
+#         )
+#
+#
+# class DirectorSchema(ma.Schema):
+#     class Meta:
+#         fields = (
+#             'director_id',
+#             'director_name',
+#             'director_address'
+#         )

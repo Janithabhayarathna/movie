@@ -1,5 +1,5 @@
 from model import Movie, Theater, db
-from schema import MovieSchema, TheaterSchema, TheaterMovieSchema
+from schema import MovieSchema, TheaterSchema, TheaterMovieSchema, MovieTheaterSchema
 from flask import jsonify, request, abort, make_response
 
 
@@ -9,17 +9,17 @@ def get_movie_list(movie_id=None):
 
         if year is not None:
             movie = Movie.query.filter_by(released_year=year).all()
-            movie_schema = MovieSchema(many=True)
+            movie_schema = MovieTheaterSchema(many=True)
             return movie_schema.jsonify(movie)
 
         elif movie_id is None:
             movie = Movie.query.filter().all()
-            movie_schema = MovieSchema(many=True)
+            movie_schema = MovieTheaterSchema(many=True)
             return movie_schema.jsonify(movie)
 
         else:
             movie = Movie.query.filter_by(movie_id=movie_id).first()
-            movie_schema = MovieSchema()
+            movie_schema = MovieTheaterSchema()
             return movie_schema.jsonify(movie)
 
     except Exception as e:
@@ -27,16 +27,19 @@ def get_movie_list(movie_id=None):
 
 
 def get_one_movie(movie_id):
-    movie = Movie.query.filter_by(movie_id=movie_id).first()
-    movie_schema = MovieSchema()
-    return movie_schema.jsonify(movie)
+    movie = Movie.query.filter_by(movie_id=movie_id).outerjoin(Theater).one_or_none()
+    if movie is not None:
+        movie_schema = MovieTheaterSchema()
+        return movie_schema.jsonify(movie)
+    else:
+        abort(404, f"Movie not found for Id: {movie_id}")
 
 
 def post_movie():
     data = request.get_json()
     try:
         new_movie = Movie(**data)
-        movie_schema = MovieSchema()
+        movie_schema = MovieTheaterSchema()
         db.session.add(new_movie)
 
         db.session.commit()
@@ -68,7 +71,7 @@ def update_movie(movie_id):
         new_movie = Movie(movie_name, released_year, movie_type)
         new_movie.movie_id = movie_id
 
-        schema = MovieSchema()
+        schema = MovieTheaterSchema()
 
         db.session.merge(new_movie)
         db.session.commit()
@@ -117,18 +120,18 @@ def get_one_theater(theater_id):
     return theater_schema.jsonify(theater)
 
 
-def get_one_theater_movie(movie_id, theater_id):
-    theater = Theater.query.join(Movie, Movie.movie_id == Theater.theater_id).filter(Movie.movie_id == movie_id).filter(Theater.theater_id == theater_id).one_or_none()
-    if theater is not None:
-        theater_schema = TheaterSchema()
-        data = theater_schema.dump(theater).data
-        return data
-
-    else:
-        abort(404, f"Theater not found for Id: {theater_id}")
-
-    theater_schema = TheaterSchema()
-    return theater_schema.jsonify(theater)
+# def get_one_theater_movie(movie_id, theater_id):
+#     theater = Theater.query.join(Movie, Movie.movie_id == Theater.theater_id).filter(Movie.movie_id == movie_id).filter(Theater.theater_id == theater_id).one_or_none()
+#     if theater is not None:
+#         theater_schema = TheaterSchema()
+#         data = theater_schema.dump(theater).data
+#         return data
+#
+#     else:
+#         abort(404, f"Theater not found for Id: {theater_id}")
+#
+#     theater_schema = TheaterSchema()
+#     return theater_schema.jsonify(theater)
 
 
 def post_theater():

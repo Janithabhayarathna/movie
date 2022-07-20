@@ -234,8 +234,6 @@ paths:
 #          description: bad input parameter
 
   /api/theaters/{theater_id}:
-
-
     put:
       operationId: view.update_theater
       tags:
@@ -277,6 +275,30 @@ paths:
       responses:
         200:
           description: Successfully deleted a theater in the theater list
+
+#  /api/movies/{movie_id}/theaters/{theater_id}:
+#    put:
+#      operationId: view.update_theater_movie
+#      tags:
+#        - theaters
+#      summary: Update a theater in the theaters list relavant to
+#      description: Update a theater in the theaters list
+#      parameters:
+#        - name: theater_id
+#          in: path
+#          required: true
+#          description: The id of the theater to update.
+#          schema:
+#            type: integer
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/theatersItem'
+#        description: movie to update
+#      responses:
+#        "200":
+#          description: Successfully updated the theater in the theater list
 
 
 components:
