@@ -9,17 +9,17 @@ def get_movie_list(movie_id=None):
 
         if year is not None:
             movie = Movie.query.filter_by(released_year=year).all()
-            movie_schema = MovieTheaterSchema(many=True)
+            movie_schema = MovieSchema(many=True)
             return movie_schema.jsonify(movie)
 
         elif movie_id is None:
             movie = Movie.query.filter().all()
-            movie_schema = MovieTheaterSchema(many=True)
+            movie_schema = MovieSchema(many=True)
             return movie_schema.jsonify(movie)
 
         else:
             movie = Movie.query.filter_by(movie_id=movie_id).first()
-            movie_schema = MovieTheaterSchema()
+            movie_schema = MovieSchema()
             return movie_schema.jsonify(movie)
 
     except Exception as e:
